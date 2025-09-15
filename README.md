@@ -14,7 +14,17 @@
 
 ## 📖 小白用户快速指南
 
-> 🎯 **如果您是第一次接触 WebAssembly，请先阅读这一部分！**
+> 🎯 **如果您是第一次接触 WebAssembly，```
+```
+rustwasmdemo/                     # 📂 项目根目录
+├── 🚀 dhgohttp.exe              # ⭐ 启动服务器 (双击或命令行运行)
+├── 📄 index.html                # ⭐ 主演示页面 (浏览器中打开)
+├── 📄 README.md                 # 📖 项目说明文档 (当前文件)
+├── 📂 pkg/                      # 🎯 分发包 (已生成，可直接使用)mdemo/                     # 📂 项目根目录
+├── 🚀 dhgohttp.exe              # ⭐ 启动服务器 (双击或命令行运行)
+├── 📄 index.html                # ⭐ 主演示页面 (浏览器中打开)
+├── 📄 README.md                 # 📖 项目说明文档 (当前文件)
+├── 📂 pkg/                      # 🎯 分发包 (已生成，可直接使用)分！**
 
 ### 🚀 零基础快速体验 (3分钟)
 
@@ -195,7 +205,6 @@ rustwasmdemo/
 ├── src/
 │   └── lib.rs                   # Rust 源代码
 ├── index.html                   # 完整测试页面 (需要 wasm-pack)
-├── demo.html                    # 简化演示页面
 ├── README.md                    # 项目说明
 └── target/
     └── wasm32-unknown-unknown/
@@ -395,7 +404,6 @@ http://localhost:8080/index.html
 rustwasmdemo/                     # 📂 项目根目录
 ├── � dhgohttp.exe              # ⭐ 启动服务器 (双击或命令行运行)
 ├── 📄 index.html                # ⭐ 主演示页面 (浏览器中打开)
-├── 📄 demo.html                 # 📄 简化演示页面
 ├── 📄 README.md                 # 📖 项目说明文档 (当前文件)
 ├── 📂 pkg/                      # 🎯 分发包 (已生成，可直接使用)
 │   ├── rustwasmdemo.js          # ⭐ JavaScript 绑定层 (必需)
