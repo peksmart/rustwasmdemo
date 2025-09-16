@@ -228,8 +228,45 @@ npx serve .                   # Node.js
 ```
 
 **🌐 访问地址**: 
-- 使用 dhgohttp.exe: `http://localhost:8080/index.html`
-- 使用 Python: `http://localhost:8000/index.html`
+- 入口页：`http://localhost:8080/index.html`（可选择模块版或无模块版）
+- 模块版直达：`http://localhost:8080/index-modules.html`
+- 无模块版直达：`http://localhost:8080/index-nomodules.html`
+
+### 方式一（B）：普通网页（no-modules）版本
+
+如果你不想使用 ES Module，而是希望在普通 `<script>` 标签里直接使用全局变量的方式加载 WASM，可以使用我们已经为你准备好的 no-modules 版本：
+
+1) 构建（已构建可跳过）
+
+```powershell
+cargo build --release --target wasm32-unknown-unknown
+wasm-bindgen --target no-modules --out-dir pkg-miniprogram --out-name rustwasmdemo --no-typescript target/wasm32-unknown-unknown/release/rustwasmdemo.wasm
+```
+
+2) 打开页面
+
+- 页面文件：`index-nomodules.html`
+- 依赖文件目录：`pkg-miniprogram/`（包含 `rustwasmdemo.js` 与 `rustwasmdemo_bg.wasm`）
+
+3) 启动本地服务器并访问
+
+```powershell
+./dhgohttp.exe
+# 然后在浏览器访问：
+# http://localhost:8080/index-nomodules.html
+```
+
+在该页面中，`wasm-bindgen` 以全局变量 `wasm_bindgen` 暴露 API，初始化代码如下：
+
+```html
+<script src="./pkg-miniprogram/rustwasmdemo.js"></script>
+<script>
+(async function(){
+   await wasm_bindgen('./pkg-miniprogram/rustwasmdemo_bg.wasm');
+   // 之后可通过 wasm_bindgen.add / greet / factorial / is_prime 调用
+})();
+</script>
+```
 
 ### 方式二：在其他项目中使用
 

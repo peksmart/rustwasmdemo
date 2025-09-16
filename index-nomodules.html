@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rust WebAssembly Demo (no-modules)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #output {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+        .tip { color: #666; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <h1>Rust WebAssembly 无模块版 (no-modules)</h1>
+    <p class="tip">本页使用 wasm-bindgen 的 <code>--target no-modules</code> 产物，通过全局 <code>wasm_bindgen</code> 初始化，适合“普通网页”不用 ES Module 的场景。</p>
+
+    <div class="demo-section">
+        <h2>数学运算</h2>
+        <div>
+            <input type="number" id="num1" placeholder="第一个数字" value="10">
+            <input type="number" id="num2" placeholder="第二个数字" value="20">
+        </div>
+        <button onclick="testAdd()">加法</button>
+        <button onclick="testMultiply()">乘法</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>字符串处理</h2>
+        <input type="text" id="nameInput" placeholder="输入您的名字" value="世界">
+        <button onclick="testGreet()">生成问候语</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>高级计算</h2>
+        <input type="number" id="factorialInput" placeholder="计算阶乘" value="5" min="0" max="10">
+        <button onclick="testFactorial()">计算阶乘</button>
+        
+        <input type="number" id="primeInput" placeholder="检查质数" value="17" min="2">
+        <button onclick="testPrime()">检查是否为质数</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>输出结果</h2>
+        <div id="output">等待 WebAssembly 模块加载...</div>
+    </div>
+
+    <!-- 1) 加载 wasm-bindgen 生成的 no-modules 版 JS（会注册全局变量 wasm_bindgen） -->
+    <script src="./pkg-miniprogram/rustwasmdemo.js"></script>
+    <!-- 2) 初始化并绑定页面事件 -->
+    <script>
+        // 运行初始化。注意：必须通过 HTTP 服务器访问本页面，不能用 file://
+        (async function run() {
+            try {
+                // 传入 .wasm 路径进行初始化
+                await wasm_bindgen('./pkg-miniprogram/rustwasmdemo_bg.wasm');
+
+                // 从全局 wasm_bindgen 取出导出的函数
+                var add = wasm_bindgen.add;
+                var multiply = wasm_bindgen.multiply;
+                var greet = wasm_bindgen.greet;
+                var factorial = wasm_bindgen.factorial;
+                var is_prime = wasm_bindgen.is_prime;
+
+                // 暴露到全局，供按钮事件使用
+                window.wasm = { add: add, multiply: multiply, greet: greet, factorial: factorial, is_prime: is_prime };
+
+                setOutput('WebAssembly 模块已加载完成！\n请点击上面的按钮测试各种功能。\n');
+            } catch (e) {
+                setOutput('加载失败: ' + (e && e.message ? e.message : e));
+                console.error(e);
+            }
+        })();
+
+        // 下面是按钮事件与辅助函数（与模块版 index.html 保持一致体验）
+        function testAdd() {
+            var num1 = parseInt(document.getElementById('num1').value);
+            var num2 = parseInt(document.getElementById('num2').value);
+            var result = window.wasm.add(num1, num2);
+            appendOutput('加法运算: ' + num1 + ' + ' + num2 + ' = ' + result);
+        }
+
+        function testMultiply() {
+            var num1 = parseInt(document.getElementById('num1').value);
+            var num2 = parseInt(document.getElementById('num2').value);
+            var result = window.wasm.multiply(num1, num2);
+            appendOutput('乘法运算: ' + num1 + ' × ' + num2 + ' = ' + result);
+        }
+
+        function testGreet() {
+            var name = document.getElementById('nameInput').value;
+            var result = window.wasm.greet(name);
+            appendOutput('问候语: ' + result);
+        }
+
+        function testFactorial() {
+            var num = parseInt(document.getElementById('factorialInput').value);
+            if (num < 0 || num > 10) {
+                appendOutput('阶乘计算: 请输入 0-10 之间的数字');
+                return;
+            }
+            var result = window.wasm.factorial(num);
+            appendOutput('阶乘计算: ' + num + '! = ' + result);
+        }
+
+        function testPrime() {
+            var num = parseInt(document.getElementById('primeInput').value);
+            var result = window.wasm.is_prime(num);
+            appendOutput('质数检查: ' + num + (result ? ' 是' : ' 不是') + '质数');
+        }
+
+        function setOutput(text) {
+            var output = document.getElementById('output');
+            output.textContent = text;
+        }
+
+        function appendOutput(text) {
+            var output = document.getElementById('output');
+            output.textContent += text + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+    </script>
+</body>
+</html>
