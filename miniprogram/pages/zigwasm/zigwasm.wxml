@@ -16,48 +16,50 @@
     <view class="section">
       <view class="section-title">🧮 数学运算</view>
       
-      <!-- 加法和乘法放在一行 -->
+      <!-- 加法 -->
       <view class="math-row">
         <view class="math-item">
           <text class="label">加法:</text>
-          <input class="input" type="number" value="{{addInputA}}" bindinput="onAddInputA"/>
+          <input class="input" type="number" value="{{addA}}" bindinput="onAddAInput"/>
           <text class="operator">+</text>
-          <input class="input" type="number" value="{{addInputB}}" bindinput="onAddInputB"/>
-          <button class="btn-small" bindtap="onCalculateAdd" disabled="{{!wasmReady}}">=</button>
-          <text class="result-text">{{addResult.value}}</text>
+          <input class="input" type="number" value="{{addB}}" bindinput="onAddBInput"/>
+          <button class="btn-small" bindtap="calculateAdd" disabled="{{!wasmReady}}">=</button>
+          <text class="result-text">{{addResult}}</text>
         </view>
       </view>
       
+      <!-- 乘法 -->
       <view class="math-row">
         <view class="math-item">
           <text class="label">乘法:</text>
-          <input class="input" type="number" value="{{multiplyInputA}}" bindinput="onMultiplyInputA"/>
+          <input class="input" type="number" value="{{mulA}}" bindinput="onMulAInput"/>
           <text class="operator">×</text>
-          <input class="input" type="number" value="{{multiplyInputB}}" bindinput="onMultiplyInputB"/>
-          <button class="btn-small" bindtap="onCalculateMultiply" disabled="{{!wasmReady}}">=</button>
-          <text class="result-text">{{multiplyResult.value}}</text>
+          <input class="input" type="number" value="{{mulB}}" bindinput="onMulBInput"/>
+          <button class="btn-small" bindtap="calculateMul" disabled="{{!wasmReady}}">=</button>
+          <text class="result-text">{{mulResult}}</text>
         </view>
       </view>
       
+      <!-- 斐波那契 -->
       <view class="math-row">
         <view class="math-item">
           <text class="label">斐波那契:</text>
-          <input class="input" type="number" value="{{fibInput}}" bindinput="onFibInput"/>
-          <button class="btn-small" bindtap="onCalculateFib" disabled="{{!wasmReady}}">计算</button>
-          <text class="result-text">{{fibResult.value}}</text>
+          <input class="input" type="number" value="{{fibN}}" bindinput="onFibNInput"/>
+          <button class="btn-small" bindtap="calculateFib" disabled="{{!wasmReady}}">计算</button>
+          <text class="result-text">{{fibResult}}</text>
         </view>
       </view>
     </view>
 
     <!-- 字符串处理区域 -->
     <view class="section">
-      <view class="section-title">� 字符串处理</view>
+      <view class="section-title">📝 字符串处理</view>
       
       <view class="string-row">
         <view class="string-item">
           <text class="label">问候语:</text>
-          <input class="input" type="number" placeholder="年龄" value="{{greetAge}}" bindinput="onGreetAgeInput"/>
-          <button class="btn-small" bindtap="onGenerateGreet" disabled="{{!wasmReady}}">生成</button>
+          <input class="input-text" placeholder="输入姓名" value="{{greetName}}" bindinput="onGreetNameInput"/>
+          <button class="btn-small" bindtap="processGreet" disabled="{{!wasmReady}}">生成</button>
         </view>
         <view class="string-result">{{greetResult}}</view>
       </view>
@@ -65,8 +67,8 @@
       <view class="string-row">
         <view class="string-item">
           <text class="label">反转:</text>
-          <input class="input-text" placeholder="输入文字" value="{{reverseInput}}" bindinput="onReverseInput"/>
-          <button class="btn-small" bindtap="onReverseString" disabled="{{!wasmReady}}">反转</button>
+          <input class="input-text" placeholder="输入文字" value="{{reverseText}}" bindinput="onReverseTextInput"/>
+          <button class="btn-small" bindtap="processReverse" disabled="{{!wasmReady}}">反转</button>
         </view>
         <view class="string-result">{{reverseResult}}</view>
       </view>
