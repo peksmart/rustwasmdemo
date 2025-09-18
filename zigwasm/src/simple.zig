@@ -1,17 +1,13 @@
-// Zig WASM 模块 for 微信小程序
-// 适用于 Zig 0.15.1
+// 简化的 WASM 模块测试
 
-// 加法函数
 export fn add(a: i32, b: i32) i32 {
     return a + b;
 }
 
-// 乘法函数
 export fn multiply(a: i32, b: i32) i32 {
     return a * b;
 }
 
-// 斐波那契数列计算
 export fn fibonacci(n: i32) i32 {
     if (n <= 1) return n;
     return fibonacci(n - 1) + fibonacci(n - 2);

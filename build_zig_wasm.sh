@@ -12,15 +12,13 @@ if [ ! -d "zigwasm" ]; then
     exit 1
 fi
 
-# 进入 zigwasm 目录
 cd zigwasm
 
 echo "正在编译 Zig WASM..."
-echo "使用优化：ReleaseSmall (最小体积)"
 echo
 
-# 编译 WASM
-zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSmall --name zigwasm
+# 编译 WASM (Zig 0.15.1+ 标准方法)
+zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci --name zigwasm
 
 # 检查编译结果
 if [ -f "zigwasm.wasm" ]; then
@@ -28,7 +26,6 @@ if [ -f "zigwasm.wasm" ]; then
     echo "✅ 编译成功！"
     echo "📁 输出文件：zigwasm/zigwasm.wasm"
     
-    # 显示文件大小
     file_size=$(wc -c < zigwasm.wasm)
     echo "📊 文件大小：${file_size} 字节"
     

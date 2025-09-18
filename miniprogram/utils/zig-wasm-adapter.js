@@ -25,7 +25,12 @@ class ZigWasmAdapter {
       this.exports = this.wasmInstance.exports;
 
       console.log('Zig WASM 模块加载成功');
-      console.log('可用导出:', Object.keys(this.exports));
+      console.log('所有导出项:', Object.keys(this.exports));
+      
+      // 详细打印每个导出项的类型
+      Object.keys(this.exports).forEach(key => {
+        console.log(`导出项 ${key}: ${typeof this.exports[key]}`);
+      });
 
       return this;
     } catch (error) {
