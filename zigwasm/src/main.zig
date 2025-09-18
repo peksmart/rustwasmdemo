@@ -23,26 +23,33 @@ export fn fibonacci(n: i32) i32 {
 }
 
 // 字符串处理：生成问候语
-// 参数：age - 年龄
-// 返回：字符串在内存中的起始位置
-export fn greet(age: i32) i32 {
-    var greeting: []const u8 = undefined;
+// 参数：ptr - 输入姓名字符串的指针，len - 字符串长度
+// 返回：问候语字符串的长度
+export fn greet(ptr: i32, len: i32) i32 {
+    const input_start: usize = @intCast(ptr);
+    const input_len: usize = @intCast(len);
 
-    if (age < 18) {
-        greeting = "你好，年轻人！未来属于你们！";
-    } else if (age < 30) {
-        greeting = "你好，青年朋友！正是拼搏的好时光！";
-    } else if (age < 60) {
-        greeting = "你好！事业有成，家庭幸福！";
-    } else {
-        greeting = "您好！祝您身体健康，万事如意！";
-    }
+    // 从内存中读取输入的姓名
+    const name = memory[input_start .. input_start + input_len];
 
-    // 将字符串复制到内存的开头
-    @memcpy(memory[0..greeting.len], greeting);
+    // 构造问候语（简单拼接）
+    const greeting_prefix = "你好，";
+    const greeting_suffix = "！欢迎使用 Zig WebAssembly！";
 
-    // 返回字符串长度（JavaScript需要知道读取多少字节）
-    return @intCast(greeting.len);
+    const output_start: usize = 0;
+    var offset: usize = 0;
+
+    // 拼接问候语
+    @memcpy(memory[output_start + offset .. output_start + offset + greeting_prefix.len], greeting_prefix);
+    offset += greeting_prefix.len;
+
+    @memcpy(memory[output_start + offset .. output_start + offset + name.len], name);
+    offset += name.len;
+
+    @memcpy(memory[output_start + offset .. output_start + offset + greeting_suffix.len], greeting_suffix);
+    offset += greeting_suffix.len;
+
+    return @intCast(offset);
 }
 
 // 获取内存地址的辅助函数
@@ -62,6 +69,9 @@ export fn reverseString(ptr: i32, len: i32) i32 {
 
     // 反转字符串到内存的另一个位置（从1024字节开始）
     const output_start: usize = 1024;
+
+    // 简单的字节反转（注意：这对于多字节UTF-8字符可能不正确）
+    // 为了简单起见，我们按字节反转
     for (0..input_len) |i| {
         memory[output_start + i] = input[input_len - 1 - i];
     }
