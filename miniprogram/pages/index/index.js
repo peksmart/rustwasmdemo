@@ -1,2 +1,8 @@
 // index.js
-Page({})
+Page({
+  navigateToWasm() {
+    wx.navigateTo({
+      url: '/pages/wasm/wasm'
+    });
+  }
+})

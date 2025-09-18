@@ -1,0 +1,66 @@
+<!--pages/wasm/wasm.wxml-->
+<navigation-bar title="WASM 示例" back="{{false}}"></navigation-bar>
+
+<view class="container">
+  <view class="header">
+    <text class="title">Rust WebAssembly 示例</text>
+    <text class="subtitle">在微信小程序中使用 WASM</text>
+  </view>
+
+  <view class="section">
+    <text class="section-title">数学运算</text>
+    
+    <view class="input-group">
+      <text class="label">数字 A:</text>
+      <input class="input" type="number" value="{{numberA}}" bindinput="onNumberAChange" placeholder="输入第一个数字" />
+    </view>
+    
+    <view class="input-group">
+      <text class="label">数字 B:</text>
+      <input class="input" type="number" value="{{numberB}}" bindinput="onNumberBChange" placeholder="输入第二个数字" />
+    </view>
+    
+    <view class="button-group">
+      <button class="btn btn-primary" bindtap="onAdd">加法运算</button>
+      <button class="btn btn-primary" bindtap="onMultiply">乘法运算</button>
+    </view>
+    
+    <view class="result" wx:if="{{mathResult !== null}}">
+      <text>运算结果: {{mathResult}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">字符串处理</text>
+    
+    <view class="input-group">
+      <text class="label">姓名:</text>
+      <input class="input" value="{{name}}" bindinput="onNameChange" placeholder="输入您的姓名" />
+    </view>
+    
+    <button class="btn btn-secondary" bindtap="onGreet">生成问候语</button>
+    
+    <view class="result" wx:if="{{greetResult}}">
+      <text>{{greetResult}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">高级计算</text>
+    
+    <view class="input-group">
+      <text class="label">数字 (阶乘):</text>
+      <input class="input" type="number" value="{{factorialInput}}" bindinput="onFactorialInputChange" placeholder="输入数字计算阶乘" />
+    </view>
+    
+    <button class="btn btn-accent" bindtap="onFactorial">计算阶乘</button>
+    
+    <view class="result" wx:if="{{factorialResult !== null}}">
+      <text>{{factorialInput}}! = {{factorialResult}}</text>
+    </view>
+  </view>
+
+  <view class="status">
+    <text class="status-text">WASM 状态: {{wasmStatus}}</text>
+  </view>
+</view>
