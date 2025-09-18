@@ -684,6 +684,114 @@ web-sys = { version = "0.3", features = ["console"] }  # Web API 访问
 - [wasm-bindgen Guide](https://rustwasm.github.io/wasm-bindgen/)
 - [WebAssembly MDN](https://developer.mozilla.org/en-US/docs/WebAssembly)
 
+## 🔧 Zig 编译 WebAssembly 指令参考
+
+项目中也包含了Zig语言编译WebAssembly的示例，以下是常用的编译指令：
+
+### 🚀 快速编译指令
+
+#### 1. 基础编译 (使用 build_wasm.zig)
+```bash
+# 进入 zigwasm 目录
+cd zigwasm
+
+# 使用专门的 WASM 构建脚本编译
+zig build -Dbuild-file=build_wasm.zig wasm
+
+# 或者直接指定构建文件
+zig build --build-file build_wasm.zig
+```
+
+#### 2. 直接编译单个文件
+```bash
+# 编译为 WASM 格式 (最常用)
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic
+
+# 指定输出文件名
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic --name zigwasm
+
+# 优化编译 (生产环境)
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSmall
+```
+
+#### 3. 高级编译选项
+```bash
+# 调试版本编译
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O Debug
+
+# 快速发布版本
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseFast
+
+# 小体积发布版本 (推荐用于Web)
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSmall
+
+# 安全发布版本
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSafe
+```
+
+### 📋 编译参数说明
+
+| 参数 | 说明 | 必需性 |
+|------|------|--------|
+| `-target wasm32-freestanding` | 指定目标为32位WASM，无操作系统 | **必需** |
+| `-dynamic` | 生成动态链接库 | **必需** |
+| `-rdynamic` | 导出所有符号供外部调用 | **必需** |
+| `-O ReleaseSmall` | 优化等级：最小体积 | 推荐 |
+| `-O ReleaseFast` | 优化等级：最快速度 | 可选 |
+| `-O Debug` | 调试模式 | 开发时使用 |
+| `--name zigwasm` | 指定输出文件名 | 可选 |
+
+### 🎯 实用构建脚本
+
+创建 `build_wasm.bat` (Windows) 或 `build_wasm.sh` (Linux/Mac)：
+
+**Windows (build_wasm.bat):**
+```batch
+@echo off
+echo 正在编译 Zig WASM...
+cd zigwasm
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSmall --name zigwasm
+echo 编译完成！输出文件：zigwasm.wasm
+pause
+```
+
+**Linux/Mac (build_wasm.sh):**
+```bash
+#!/bin/bash
+echo "正在编译 Zig WASM..."
+cd zigwasm
+zig build-lib src/main.zig -target wasm32-freestanding -dynamic -rdynamic -O ReleaseSmall --name zigwasm
+echo "编译完成！输出文件：zigwasm.wasm"
+```
+
+### 🔍 验证编译结果
+
+```bash
+# 查看 WASM 文件信息
+file zigwasm.wasm
+
+# 查看 WASM 文件大小
+ls -lh zigwasm.wasm
+
+# 使用 wasm-objdump 查看导出函数 (需要安装 wabt)
+wasm-objdump -x zigwasm.wasm
+```
+
+### 📁 Zig 项目结构
+
+```
+zigwasm/
+├── build.zig              # 标准构建脚本
+├── build_wasm.zig         # WASM专用构建脚本
+├── build.zig.zon          # 项目配置
+├── src/
+│   ├── main.zig          # 主要源代码
+│   └── root.zig          # 模块根文件
+├── tools/
+│   └── count-wasm-tables.ps1  # 分析工具
+└── zigwasm.wasm          # 编译输出 (生成后)
+```
+
 ### 🛠️ 相关工具
 - **wasm-pack**: WebAssembly 包构建工具
 - **wasm-bindgen**: Rust 和 JavaScript 绑定
