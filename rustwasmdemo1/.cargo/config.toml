@@ -1,0 +1,8 @@
+[build]
+target = "wasm32-unknown-unknown"
+
+[target.wasm32-unknown-unknown]
+rustflags = [
+    # 减小体积且不引入多表相关特性
+    "-C", "link-arg=-zstack-size=65536",
+]
