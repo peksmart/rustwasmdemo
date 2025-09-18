@@ -12,12 +12,12 @@ page {
 .container {
   padding: 40rpx;
   background-color: #f5f5f5;
-  min-height: 100vh;
+  display: inherit !important;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 60rpx;
+  margin-bottom: 0rpx;
   padding: 40rpx;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20rpx;
@@ -38,7 +38,7 @@ page {
 }
 
 .menu {
-  margin-top: 40rpx;
+  margin-top: 10rpx;
 }
 
 .menu-item {

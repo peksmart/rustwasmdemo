@@ -5,6 +5,7 @@
     <view class="header">
       <text class="title">Rust WebAssembly Demo</text>
       <text class="subtitle">微信小程序 + Rust WASM 示例</text>
+      123456
     </view>
     
     <view class="menu">
