@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/wasm/wasm"
+    "pages/wasm/wasm",
+    "pages/zigwasm/zigwasm"
   ],
   "window": {
     "navigationBarTextStyle": "black",

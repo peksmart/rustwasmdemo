@@ -1,0 +1,67 @@
+<!--zigwasm.wxml-->
+<navigation-bar title="Zig WASM Demo" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="header">
+      <text class="title">🔮 Zig WebAssembly</text>
+      <text class="subtitle">高性能系统级编程语言</text>
+    </view>
+
+    <!-- WASM 状态 -->
+    <view class="wasm-status {{wasmStatus.class}}">
+      <text>{{wasmStatus.text}}</text>
+    </view>
+
+    <!-- 加法运算 -->
+    <view class="function-section">
+      <view class="section-title">➕ 加法运算</view>
+      <view class="input-group">
+        <text class="input-label">数字A:</text>
+        <input class="input-field" type="number" placeholder="请输入第一个数字" 
+               value="{{addInputA}}" bindinput="onAddInputA"/>
+      </view>
+      <view class="input-group">
+        <text class="input-label">数字B:</text>
+        <input class="input-field" type="number" placeholder="请输入第二个数字" 
+               value="{{addInputB}}" bindinput="onAddInputB"/>
+      </view>
+      <button class="calculate-btn" bindtap="onCalculateAdd" disabled="{{!wasmReady}}">
+        计算 {{addInputA}} + {{addInputB}}
+      </button>
+      <view class="result {{addResult.class}}">{{addResult.text}}</view>
+    </view>
+
+    <!-- 乘法运算 -->
+    <view class="function-section">
+      <view class="section-title">✖️ 乘法运算</view>
+      <view class="input-group">
+        <text class="input-label">数字A:</text>
+        <input class="input-field" type="number" placeholder="请输入第一个数字" 
+               value="{{multiplyInputA}}" bindinput="onMultiplyInputA"/>
+      </view>
+      <view class="input-group">
+        <text class="input-label">数字B:</text>
+        <input class="input-field" type="number" placeholder="请输入第二个数字" 
+               value="{{multiplyInputB}}" bindinput="onMultiplyInputB"/>
+      </view>
+      <button class="calculate-btn" bindtap="onCalculateMultiply" disabled="{{!wasmReady}}">
+        计算 {{multiplyInputA}} × {{multiplyInputB}}
+      </button>
+      <view class="result {{multiplyResult.class}}">{{multiplyResult.text}}</view>
+    </view>
+
+    <!-- 斐波那契数列 -->
+    <view class="function-section">
+      <view class="section-title">🔢 斐波那契数列</view>
+      <view class="input-group">
+        <text class="input-label">位置:</text>
+        <input class="input-field" type="number" placeholder="请输入位置(0-40)" 
+               value="{{fibInput}}" bindinput="onFibInput"/>
+      </view>
+      <button class="calculate-btn" bindtap="onCalculateFib" disabled="{{!wasmReady}}">
+        计算第 {{fibInput}} 个斐波那契数
+      </button>
+      <view class="result {{fibResult.class}}">{{fibResult.text}}</view>
+    </view>
+  </view>
+</scroll-view>

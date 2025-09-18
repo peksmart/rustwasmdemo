@@ -5,13 +5,17 @@
     <view class="header">
       <text class="title">Rust WebAssembly Demo</text>
       <text class="subtitle">微信小程序 + Rust WASM 示例</text>
-      123456
     </view>
     
     <view class="menu">
       <button class="menu-item" bindtap="navigateToWasm">
-        <text class="menu-title">🦀 WASM 示例</text>
+        <text class="menu-title">🦀 Rust WASM</text>
         <text class="menu-desc">体验 Rust WebAssembly 功能</text>
+      </button>
+      
+      <button class="menu-item" bindtap="navigateToZigWasm">
+        <text class="menu-title">🔮 Zig WASM</text>
+        <text class="menu-desc">体验 Zig WebAssembly 高性能计算</text>
       </button>
     </view>
   </view>

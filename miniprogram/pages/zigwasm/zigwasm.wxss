@@ -1,0 +1,140 @@
+/* zigwasm.wxss */
+page {
+  background-color: #f5f5f5;
+}
+
+.container {
+  padding: 20rpx;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30rpx;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
+  border-radius: 20rpx;
+  color: white;
+}
+
+.title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.function-section {
+  background: white;
+  margin-bottom: 20rpx;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.input-label {
+  min-width: 80rpx;
+  margin-right: 15rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.input-field {
+  flex: 1;
+  padding: 15rpx 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background: #fafafa;
+}
+
+.input-field:focus {
+  border-color: #ff6b95;
+  background: white;
+}
+
+.calculate-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
+  color: white;
+  border: none;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.calculate-btn:active {
+  opacity: 0.8;
+}
+
+.result {
+  background: #f0f8ff;
+  border: 2rpx solid #e6f3ff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  min-height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result.success {
+  background: #f0fff4;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+.result.error {
+  background: #fff2f0;
+  border-color: #ffccc7;
+  color: #ff4d4f;
+}
+
+.wasm-status {
+  text-align: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}
+
+.wasm-status.loading {
+  background: #fff7e6;
+  border: 2rpx solid #ffd591;
+  color: #fa8c16;
+}
+
+.wasm-status.ready {
+  background: #f6ffed;
+  border: 2rpx solid #b7eb8f;
+  color: #52c41a;
+}
+
+.wasm-status.error {
+  background: #fff2f0;
+  border: 2rpx solid #ffccc7;
+  color: #ff4d4f;
+}

@@ -4,5 +4,11 @@ Page({
     wx.navigateTo({
       url: '/pages/wasm/wasm'
     });
+  },
+
+  navigateToZigWasm() {
+    wx.navigateTo({
+      url: '/pages/zigwasm/zigwasm'
+    });
   }
 })
