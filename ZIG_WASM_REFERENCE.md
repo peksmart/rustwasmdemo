@@ -15,6 +15,8 @@ zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmal
 zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci --name zigwasm
 ```
 
+zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci --export=greet --export=getMemoryPtr --export=reverseString --export=getReversedPtr --name zigwasm
+
 ## 🎯 优化等级
 
 | 优化等级 | 特点 | 使用场景 |

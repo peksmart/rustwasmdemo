@@ -12,56 +12,64 @@
       <text>{{wasmStatus.text}}</text>
     </view>
 
-    <!-- 加法运算 -->
-    <view class="function-section">
-      <view class="section-title">➕ 加法运算</view>
-      <view class="input-group">
-        <text class="input-label">数字A:</text>
-        <input class="input-field" type="number" placeholder="请输入第一个数字" 
-               value="{{addInputA}}" bindinput="onAddInputA"/>
+    <!-- 数学运算区域 -->
+    <view class="section">
+      <view class="section-title">🧮 数学运算</view>
+      
+      <!-- 加法和乘法放在一行 -->
+      <view class="math-row">
+        <view class="math-item">
+          <text class="label">加法:</text>
+          <input class="input" type="number" value="{{addInputA}}" bindinput="onAddInputA"/>
+          <text class="operator">+</text>
+          <input class="input" type="number" value="{{addInputB}}" bindinput="onAddInputB"/>
+          <button class="btn-small" bindtap="onCalculateAdd" disabled="{{!wasmReady}}">=</button>
+          <text class="result-text">{{addResult.value}}</text>
+        </view>
       </view>
-      <view class="input-group">
-        <text class="input-label">数字B:</text>
-        <input class="input-field" type="number" placeholder="请输入第二个数字" 
-               value="{{addInputB}}" bindinput="onAddInputB"/>
+      
+      <view class="math-row">
+        <view class="math-item">
+          <text class="label">乘法:</text>
+          <input class="input" type="number" value="{{multiplyInputA}}" bindinput="onMultiplyInputA"/>
+          <text class="operator">×</text>
+          <input class="input" type="number" value="{{multiplyInputB}}" bindinput="onMultiplyInputB"/>
+          <button class="btn-small" bindtap="onCalculateMultiply" disabled="{{!wasmReady}}">=</button>
+          <text class="result-text">{{multiplyResult.value}}</text>
+        </view>
       </view>
-      <button class="calculate-btn" bindtap="onCalculateAdd" disabled="{{!wasmReady}}">
-        计算 {{addInputA}} + {{addInputB}}
-      </button>
-      <view class="result {{addResult.class}}">{{addResult.text}}</view>
+      
+      <view class="math-row">
+        <view class="math-item">
+          <text class="label">斐波那契:</text>
+          <input class="input" type="number" value="{{fibInput}}" bindinput="onFibInput"/>
+          <button class="btn-small" bindtap="onCalculateFib" disabled="{{!wasmReady}}">计算</button>
+          <text class="result-text">{{fibResult.value}}</text>
+        </view>
+      </view>
     </view>
 
-    <!-- 乘法运算 -->
-    <view class="function-section">
-      <view class="section-title">✖️ 乘法运算</view>
-      <view class="input-group">
-        <text class="input-label">数字A:</text>
-        <input class="input-field" type="number" placeholder="请输入第一个数字" 
-               value="{{multiplyInputA}}" bindinput="onMultiplyInputA"/>
+    <!-- 字符串处理区域 -->
+    <view class="section">
+      <view class="section-title">� 字符串处理</view>
+      
+      <view class="string-row">
+        <view class="string-item">
+          <text class="label">问候语:</text>
+          <input class="input" type="number" placeholder="年龄" value="{{greetAge}}" bindinput="onGreetAgeInput"/>
+          <button class="btn-small" bindtap="onGenerateGreet" disabled="{{!wasmReady}}">生成</button>
+        </view>
+        <view class="string-result">{{greetResult}}</view>
       </view>
-      <view class="input-group">
-        <text class="input-label">数字B:</text>
-        <input class="input-field" type="number" placeholder="请输入第二个数字" 
-               value="{{multiplyInputB}}" bindinput="onMultiplyInputB"/>
+      
+      <view class="string-row">
+        <view class="string-item">
+          <text class="label">反转:</text>
+          <input class="input-text" placeholder="输入文字" value="{{reverseInput}}" bindinput="onReverseInput"/>
+          <button class="btn-small" bindtap="onReverseString" disabled="{{!wasmReady}}">反转</button>
+        </view>
+        <view class="string-result">{{reverseResult}}</view>
       </view>
-      <button class="calculate-btn" bindtap="onCalculateMultiply" disabled="{{!wasmReady}}">
-        计算 {{multiplyInputA}} × {{multiplyInputB}}
-      </button>
-      <view class="result {{multiplyResult.class}}">{{multiplyResult.text}}</view>
-    </view>
-
-    <!-- 斐波那契数列 -->
-    <view class="function-section">
-      <view class="section-title">🔢 斐波那契数列</view>
-      <view class="input-group">
-        <text class="input-label">位置:</text>
-        <input class="input-field" type="number" placeholder="请输入位置(0-40)" 
-               value="{{fibInput}}" bindinput="onFibInput"/>
-      </view>
-      <button class="calculate-btn" bindtap="onCalculateFib" disabled="{{!wasmReady}}">
-        计算第 {{fibInput}} 个斐波那契数
-      </button>
-      <view class="result {{fibResult.class}}">{{fibResult.text}}</view>
     </view>
   </view>
 </scroll-view>

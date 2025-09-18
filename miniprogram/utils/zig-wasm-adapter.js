@@ -71,6 +71,70 @@ class ZigWasmAdapter {
     return this.exports.fibonacci(n);
   }
 
+  // 字符串处理：生成问候语
+  greet(age) {
+    if (!this.exports.greet || !this.exports.getMemoryPtr) {
+      // JavaScript 降级实现
+      if (age < 18) {
+        return "你好，年轻人！未来属于你们！";
+      } else if (age < 30) {
+        return "你好，青年朋友！正是拼搏的好时光！";
+      } else if (age < 60) {
+        return "你好！事业有成，家庭幸福！";
+      } else {
+        return "您好！祝您身体健康，万事如意！";
+      }
+    }
+
+    try {
+      // 调用WASM函数生成问候语
+      const len = this.exports.greet(age);
+      const memoryPtr = this.exports.getMemoryPtr();
+      
+      // 从WASM内存中读取字符串
+      const memory = new Uint8Array(this.wasmInstance.exports.memory.buffer);
+      const bytes = memory.slice(memoryPtr, memoryPtr + len);
+      
+      // 解码为UTF-8字符串
+      const decoder = new TextDecoder('utf-8');
+      return decoder.decode(bytes);
+    } catch (error) {
+      console.error('WASM greet函数调用失败:', error);
+      return "你好！欢迎使用Zig WebAssembly！";
+    }
+  }
+
+  // 字符串反转功能
+  reverseString(inputString) {
+    if (!this.exports.reverseString || !this.exports.getReversedPtr) {
+      // JavaScript 降级实现
+      return inputString.split('').reverse().join('');
+    }
+
+    try {
+      // 将字符串编码为UTF-8字节
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(inputString);
+      
+      // 写入WASM内存
+      const memory = new Uint8Array(this.wasmInstance.exports.memory.buffer);
+      const inputPtr = 2048; // 使用内存的另一个位置
+      memory.set(bytes, inputPtr);
+      
+      // 调用WASM反转函数
+      const resultLen = this.exports.reverseString(inputPtr, bytes.length);
+      const resultPtr = this.exports.getReversedPtr();
+      
+      // 读取结果
+      const resultBytes = memory.slice(resultPtr, resultPtr + resultLen);
+      const decoder = new TextDecoder('utf-8');
+      return decoder.decode(resultBytes);
+    } catch (error) {
+      console.error('WASM reverseString函数调用失败:', error);
+      return inputString.split('').reverse().join('');
+    }
+  }
+
   // 检查 WASM 是否已准备就绪
   isReady() {
     return this.wasmInstance !== null && this.exports !== null;

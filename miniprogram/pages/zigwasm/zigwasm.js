@@ -1,4 +1,4 @@
-// zigwasm.js
+// zigwasm.js - 紧凑版本
 const ZigWasmAdapter = require('../../utils/zig-wasm-adapter.js');
 
 Page({
@@ -11,28 +11,21 @@ Page({
       class: 'loading'
     },
 
-    // 加法输入
-    addInputA: 10,
-    addInputB: 20,
-    addResult: {
-      text: '点击按钮开始计算',
-      class: ''
-    },
-
-    // 乘法输入
-    multiplyInputA: 5,
-    multiplyInputB: 8,
-    multiplyResult: {
-      text: '点击按钮开始计算',
-      class: ''
-    },
-
-    // 斐波那契输入
-    fibInput: 10,
-    fibResult: {
-      text: '点击按钮开始计算',
-      class: ''
-    }
+    // 数学运算
+    addA: '10',
+    addB: '20',
+    addResult: '',
+    mulA: '5',
+    mulB: '8',
+    mulResult: '',
+    fibN: '10',
+    fibResult: '',
+    
+    // 字符串处理
+    greetName: '',
+    greetResult: '',
+    reverseText: '',
+    reverseResult: ''
   },
 
   async onLoad() {
@@ -60,7 +53,7 @@ Page({
         wasmAdapter: adapter,
         wasmReady: true,
         wasmStatus: {
-          text: '✅ Zig WASM 模块加载成功！',
+          text: '✅ Zig WASM 模块就绪！',
           class: 'ready'
         }
       });
@@ -77,7 +70,6 @@ Page({
         }
       });
 
-      // 显示错误提示
       wx.showToast({
         title: 'WASM加载失败',
         icon: 'error',
@@ -86,124 +78,119 @@ Page({
     }
   },
 
-  // 输入处理函数
-  onAddInputA(e) {
-    this.setData({ addInputA: parseInt(e.detail.value) || 0 });
-  },
+  // 数学运算方法
+  calculateAdd() {
+    if (!this.data.wasmReady || !this.data.wasmAdapter) {
+      wx.showToast({ title: 'WASM 模块未就绪', icon: 'error' });
+      return;
+    }
 
-  onAddInputB(e) {
-    this.setData({ addInputB: parseInt(e.detail.value) || 0 });
-  },
-
-  onMultiplyInputA(e) {
-    this.setData({ multiplyInputA: parseInt(e.detail.value) || 0 });
-  },
-
-  onMultiplyInputB(e) {
-    this.setData({ multiplyInputB: parseInt(e.detail.value) || 0 });
-  },
-
-  onFibInput(e) {
-    this.setData({ fibInput: parseInt(e.detail.value) || 0 });
-  },
-
-  // 计算函数
-  onCalculateAdd() {
     try {
-      if (!this.data.wasmReady || !this.data.wasmAdapter) {
-        throw new Error('WASM 模块未准备就绪');
-      }
-
-      const a = this.data.addInputA;
-      const b = this.data.addInputB;
-      
-      console.log(`调用 Zig WASM add(${a}, ${b})`);
+      const a = parseInt(this.data.addA) || 0;
+      const b = parseInt(this.data.addB) || 0;
       const result = this.data.wasmAdapter.add(a, b);
-      
-      this.setData({
-        addResult: {
-          text: `结果: ${a} + ${b} = ${result}`,
-          class: 'success'
-        }
-      });
-
-      console.log(`加法计算结果: ${result}`);
+      this.setData({ addResult: result.toString() });
+      console.log(`加法: ${a} + ${b} = ${result}`);
     } catch (error) {
-      console.error('加法计算错误:', error);
-      this.setData({
-        addResult: {
-          text: `计算错误: ${error.message}`,
-          class: 'error'
-        }
-      });
+      console.error('加法计算失败:', error);
+      this.setData({ addResult: '计算错误' });
     }
   },
 
-  onCalculateMultiply() {
-    try {
-      if (!this.data.wasmReady || !this.data.wasmAdapter) {
-        throw new Error('WASM 模块未准备就绪');
-      }
+  calculateMul() {
+    if (!this.data.wasmReady || !this.data.wasmAdapter) {
+      wx.showToast({ title: 'WASM 模块未就绪', icon: 'error' });
+      return;
+    }
 
-      const a = this.data.multiplyInputA;
-      const b = this.data.multiplyInputB;
-      
-      console.log(`调用 Zig WASM multiply(${a}, ${b})`);
+    try {
+      const a = parseInt(this.data.mulA) || 0;
+      const b = parseInt(this.data.mulB) || 0;
       const result = this.data.wasmAdapter.multiply(a, b);
-      
-      this.setData({
-        multiplyResult: {
-          text: `结果: ${a} × ${b} = ${result}`,
-          class: 'success'
-        }
-      });
-
-      console.log(`乘法计算结果: ${result}`);
+      this.setData({ mulResult: result.toString() });
+      console.log(`乘法: ${a} × ${b} = ${result}`);
     } catch (error) {
-      console.error('乘法计算错误:', error);
-      this.setData({
-        multiplyResult: {
-          text: `计算错误: ${error.message}`,
-          class: 'error'
-        }
-      });
+      console.error('乘法计算失败:', error);
+      this.setData({ mulResult: '计算错误' });
     }
   },
 
-  onCalculateFib() {
-    try {
-      if (!this.data.wasmReady || !this.data.wasmAdapter) {
-        throw new Error('WASM 模块未准备就绪');
-      }
+  calculateFib() {
+    if (!this.data.wasmReady || !this.data.wasmAdapter) {
+      wx.showToast({ title: 'WASM 模块未就绪', icon: 'error' });
+      return;
+    }
 
-      const n = this.data.fibInput;
-      
+    try {
+      const n = parseInt(this.data.fibN) || 0;
       if (n < 0 || n > 40) {
-        throw new Error('请输入 0-40 之间的数字');
+        this.setData({ fibResult: '请输入 0-40 的数字' });
+        return;
       }
       
-      console.log(`调用 Zig WASM fibonacci(${n})`);
       const startTime = Date.now();
       const result = this.data.wasmAdapter.fibonacci(n);
-      const endTime = Date.now();
-      const duration = endTime - startTime;
+      const duration = Date.now() - startTime;
       
-      this.setData({
-        fibResult: {
-          text: `第 ${n} 个斐波那契数: ${result}\n计算耗时: ${duration}ms`,
-          class: 'success'
-        }
-      });
-
-      console.log(`斐波那契计算结果: ${result}, 耗时: ${duration}ms`);
+      this.setData({ fibResult: `${result} (${duration}ms)` });
+      console.log(`斐波那契: fib(${n}) = ${result}, 耗时: ${duration}ms`);
     } catch (error) {
-      console.error('斐波那契计算错误:', error);
-      this.setData({
-        fibResult: {
-          text: `计算错误: ${error.message}`,
-          class: 'error'
-        }
-      });
+      console.error('斐波那契计算失败:', error);
+      this.setData({ fibResult: '计算错误' });
     }
-  }
+  },
+
+  // 字符串处理方法
+  processGreet() {
+    if (!this.data.wasmReady || !this.data.wasmAdapter) {
+      wx.showToast({ title: 'WASM 模块未就绪', icon: 'error' });
+      return;
+    }
+
+    try {
+      const name = this.data.greetName.trim();
+      if (!name) {
+        this.setData({ greetResult: '请输入姓名' });
+        return;
+      }
+      
+      const result = this.data.wasmAdapter.greet(name);
+      this.setData({ greetResult: result });
+      console.log(`问候处理: ${name} -> ${result}`);
+    } catch (error) {
+      console.error('问候处理失败:', error);
+      this.setData({ greetResult: '处理错误' });
+    }
+  },
+
+  processReverse() {
+    if (!this.data.wasmReady || !this.data.wasmAdapter) {
+      wx.showToast({ title: 'WASM 模块未就绪', icon: 'error' });
+      return;
+    }
+
+    try {
+      const text = this.data.reverseText.trim();
+      if (!text) {
+        this.setData({ reverseResult: '请输入文本' });
+        return;
+      }
+      
+      const result = this.data.wasmAdapter.reverseString(text);
+      this.setData({ reverseResult: result });
+      console.log(`字符串反转: ${text} -> ${result}`);
+    } catch (error) {
+      console.error('字符串反转失败:', error);
+      this.setData({ reverseResult: '处理错误' });
+    }
+  },
+
+  // 输入事件处理
+  onAddAInput(e) { this.setData({ addA: e.detail.value }); },
+  onAddBInput(e) { this.setData({ addB: e.detail.value }); },
+  onMulAInput(e) { this.setData({ mulA: e.detail.value }); },
+  onMulBInput(e) { this.setData({ mulB: e.detail.value }); },
+  onFibNInput(e) { this.setData({ fibN: e.detail.value }); },
+  onGreetNameInput(e) { this.setData({ greetName: e.detail.value }); },
+  onReverseTextInput(e) { this.setData({ reverseText: e.detail.value }); }
 });
