@@ -81,64 +81,41 @@ class WasmAdapter {
 
   greet(name) {
     if (!this.exports.greet) {
-      // 提供 JavaScript 降级实现
-      return `你好, ${name}! 欢迎使用 Rust WebAssembly!`;
+      throw new Error('greet 函数不可用');
     }
 
-    try {
-      // 编码输入字符串
-      const { ptr, len } = this.encodeString(name);
-      
-      // 调用 WASM 函数
-      const resultPtr = this.exports.greet(ptr, len);
-      
-      // 从返回的指针数组中获取结果
-      const memory = this.getUint8ArrayMemory();
-      const resultDataPtr = new Uint32Array(memory.buffer, resultPtr, 2);
-      const strPtr = resultDataPtr[0];
-      const strLen = resultDataPtr[1];
-      
-      // 解码结果字符串
-      const result = this.decodeString(strPtr, strLen);
-      
-      // 清理内存
-      this.exports.__wbindgen_free(ptr, len);
-      this.exports.__wbindgen_free(strPtr, strLen);
-      
-      return result;
-    } catch (error) {
-      console.error('greet 函数调用失败:', error);
-      // 降级到 JavaScript 实现
-      return `你好, ${name}! 欢迎使用 Rust WebAssembly!`;
-    }
+    // 编码输入字符串
+    const { ptr, len } = this.encodeString(name);
+    
+    // 调用 WASM 函数
+    const resultPtr = this.exports.greet(ptr, len);
+    
+    // 从返回的指针数组中获取结果
+    const memory = this.getUint8ArrayMemory();
+    const resultDataPtr = new Uint32Array(memory.buffer, resultPtr, 2);
+    const strPtr = resultDataPtr[0];
+    const strLen = resultDataPtr[1];
+    
+    // 解码结果字符串
+    const result = this.decodeString(strPtr, strLen);
+    
+    // 清理内存
+    this.exports.__wbindgen_free(ptr, len);
+    this.exports.__wbindgen_free(strPtr, strLen);
+    
+    return result;
   }
 
   factorial(n) {
     if (!this.exports.factorial) {
-      // JavaScript 降级实现
-      if (n <= 1) return 1;
-      let result = 1;
-      for (let i = 2; i <= n; i++) {
-        result *= i;
-      }
-      return result;
+      throw new Error('factorial 函数不可用');
     }
     return this.exports.factorial(n);
   }
 
   isPrime(n) {
     if (!this.exports.is_prime) {
-      // JavaScript 降级实现
-      if (n <= 1) return false;
-      if (n <= 3) return true;
-      if (n % 2 === 0 || n % 3 === 0) return false;
-      
-      for (let i = 5; i * i <= n; i += 6) {
-        if (n % i === 0 || n % (i + 2) === 0) {
-          return false;
-        }
-      }
-      return true;
+      throw new Error('is_prime 函数不可用');
     }
     return this.exports.is_prime(n);
   }
