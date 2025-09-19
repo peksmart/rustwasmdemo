@@ -8,11 +8,14 @@
 # 进入目录
 cd zigwasm
 
-# 编译 WASM
+# 编译 WASM（基础函数）
 zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci
 
-# 指定输出文件名
-zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci --name zigwasm
+# 编译 WASM（包含字符串处理函数）
+zig build-exe src/main.zig -target wasm32-freestanding -fno-entry -O ReleaseSmall --export=add --export=multiply --export=fibonacci --export=greet --export=getMemoryPtr --export=reverseString --export=getReversedPtr --name zigwasm
+
+# 复制到小程序目录
+copy zigwasm.wasm ..\miniprogram\zigwasm.wasm
 ```
 
 ## 🎯 优化等级
